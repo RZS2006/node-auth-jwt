@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 
@@ -7,7 +9,14 @@ const app = express();
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
-app.use(express.json());
+
+mongoose
+	.connect(process.env.DB_URL, {
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+	})
+	.then(() => console.log('Connected to database!'))
+	.catch((err) => console.log('Error connecting to database!', err));
 
 app.get('/', (req, res) => {
 	res.send('Hello');
