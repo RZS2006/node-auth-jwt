@@ -3,6 +3,8 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 
+const authRoutes = require('./routes/authRoutes');
+
 const PORT = process.env.PORT || 8000;
 
 const app = express();
@@ -18,6 +20,8 @@ mongoose
 	.then(() => console.log('Connected to database!'))
 	.catch((err) => console.log('Error connecting to database!', err));
 
+app.use('/auth', authRoutes);
+
 app.get('/', (req, res) => {
 	res.render('home', { title: 'Home' });
 });
@@ -30,6 +34,10 @@ app.get('/posts', (req, res) => {
 	];
 
 	res.render('posts', { title: 'Posts', posts });
+});
+
+app.get('/u/profile', (req, res) => {
+	res.send('User Profile');
 });
 
 app.use((req, res) => {
