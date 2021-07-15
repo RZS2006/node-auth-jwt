@@ -1,3 +1,5 @@
+const User = require('../models/User');
+
 const signup_get = (req, res) => {
 	res.send('Sign Up Get');
 };
