@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+	<%- include("./partials/_head.ejs") %>
+	<body>
+		<%- include("./partials/_nav.ejs")%>
+		<h1>Posts</h1>
+		<% posts.forEach((post) => { %>
+		<div>
+			<h2><%= post.title %></h2>
+			<p>
+				Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+				Perspiciatis iure rerum, fuga eveniet veritatis ducimus ab aut
+				voluptas possimus sint dolorum quasi corporis magni obcaecati!
+			</p>
+		</div>
+		<% }) %>
+	</body>
+</html>

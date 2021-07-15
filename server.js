@@ -19,15 +19,21 @@ mongoose
 	.catch((err) => console.log('Error connecting to database!', err));
 
 app.get('/', (req, res) => {
-	res.send('Hello');
+	res.render('home', { title: 'Home' });
 });
 
-app.get('/monke', (req, res) => {
-	res.send('Monke');
+app.get('/posts', (req, res) => {
+	const posts = [
+		{ title: '10 Best Practices For LIGIER' },
+		{ title: "Here's A Quick Way To Solve A Problem with LIGIER" },
+		{ title: 'How To Improve At LIGIER In 60 Minutes' },
+	];
+
+	res.render('posts', { title: 'Posts', posts });
 });
 
-app.get('*', (req, res) => {
-	res.redirect('/');
+app.use((req, res) => {
+	res.status(404).render('404', { title: '404 Not Found' });
 });
 
 app.listen(PORT, () => {
