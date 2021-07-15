@@ -37,7 +37,7 @@ app.get('/posts', (req, res) => {
 });
 
 app.get('/u/profile', (req, res) => {
-	res.send('User Profile');
+	res.render('profile', { title: 'User Profile' });
 });
 
 app.use((req, res) => {

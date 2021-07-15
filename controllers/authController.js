@@ -1,11 +1,11 @@
 const User = require('../models/User');
 
 const signup_get = (req, res) => {
-	res.send('Sign Up Get');
+	res.render('signup', { title: 'Sign Up' });
 };
 
 const login_get = (req, res) => {
-	res.send('Log In Get');
+	res.render('login', { title: 'Log In' });
 };
 
 const signup_post = (req, res) => {

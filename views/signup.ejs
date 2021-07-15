@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+	<%- include("./partials/_head.ejs") %>
+	<body>
+		<%- include("./partials/_nav.ejs") %>
+		<h1>Sign Up</h1>
+		<form>
+			<input type="text" placeholder="Username" />
+			<input type="email" placeholder="Email" />
+			<input type="password" placeholder="Password" />
+			<button type="submit">Sign Up</button>
+		</form>
+		<a href="/auth/login">Already have an account? Log in.</a>
+	</body>
+</html>
