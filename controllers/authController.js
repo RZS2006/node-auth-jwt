@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
 const createAccessToken = (id) => {
-	jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, {
+	return jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, {
 		expiresIn: process.env.ACCESS_TOKEN_EXPIRATION,
 	});
 };
@@ -20,6 +20,11 @@ const signup_post = async (req, res) => {
 	const { username, email, password } = req.body;
 
 	try {
+		const emailExists = await User.findOne({ email });
+		if (emailExists) {
+			return res.status(400).json({ error: 'Email already exists' });
+		}
+
 		const salt = await bcrypt.genSalt();
 
 		const user = new User({
@@ -41,8 +46,6 @@ const signup_post = async (req, res) => {
 		console.error(err);
 		res.status(500);
 	}
-
-	res.send('Sign Up Post');
 };
 
 const login_post = (req, res) => {

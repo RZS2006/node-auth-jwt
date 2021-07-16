@@ -5,11 +5,14 @@
 		<%- include("./partials/_nav.ejs") %>
 		<h1>Sign Up</h1>
 		<form id="form">
+			<div id="error-container"></div>
 			<input
 				type="text"
 				id="input-username"
 				placeholder="Username"
 				required="true"
+				minlength="3"
+				maxlength="20"
 			/>
 			<input
 				type="email"
@@ -22,6 +25,7 @@
 				id="input-password"
 				placeholder="Password"
 				required="true"
+				minlength="8"
 			/>
 			<button type="submit">Sign Up</button>
 		</form>
@@ -30,15 +34,41 @@
 
 	<script>
 		const form = document.querySelector('#form');
-		const usernameInput = document.querySelector('#username');
-		const emailInput = document.querySelector('#email');
-		const passwordInput = document.querySelector('#password');
+		const usernameInput = document.querySelector('#input-username');
+		const emailInput = document.querySelector('#input-email');
+		const passwordInput = document.querySelector('#input-password');
+		const errorContainer = document.querySelector('#error-container');
 
-		form.addEventListener('submit', (e) => {
+		form.addEventListener('submit', async (e) => {
 			e.preventDefault();
 
+			errorContainer.textContent = '';
+
 			try {
-			} catch (err) {}
+				const res = await fetch('/auth/signup', {
+					method: 'POST',
+					body: JSON.stringify({
+						username: usernameInput.value,
+						email: emailInput.value,
+						password: passwordInput.value,
+					}),
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				});
+				const data = await res.json();
+
+				if (data.error) {
+					errorContainer.textContent = data.error;
+				}
+
+				if (data.user) {
+					console.log(`Signed up as: ${data.user}`);
+					location.assign('/posts');
+				}
+			} catch (err) {
+				console.error(err);
+			}
 		});
 	</script>
 </html>
