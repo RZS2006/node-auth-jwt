@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
 
 const authRoutes = require('./routes/authRoutes');
 
@@ -10,7 +11,9 @@ const PORT = process.env.PORT || 8000;
 const app = express();
 
 app.set('view engine', 'ejs');
+app.use(express.json());
 app.use(express.static('public'));
+app.use(cookieParser());
 
 mongoose
 	.connect(process.env.DB_URL, {
