@@ -4,11 +4,62 @@
 	<body>
 		<%- include("./partials/_nav.ejs") %>
 		<h1>Log In</h1>
-		<form>
-			<input type="email" placeholder="Email" />
-			<input type="password" placeholder="Password" />
+		<form id="form">
+			<div id="error-container"></div>
+			<input
+				type="email"
+				id="input-email"
+				placeholder="Email"
+				required="true"
+			/>
+			<input
+				type="password"
+				id="input-password"
+				placeholder="Password"
+				required="true"
+				minlength="8"
+			/>
 			<button type="submit">Log In</button>
 		</form>
 		<a href="/auth/signup">Don't have an account? Sign up.</a>
 	</body>
+
+	<script>
+		const form = document.querySelector('#form');
+		const emailInput = document.querySelector('#input-email');
+		const passwordInput = document.querySelector('#input-password');
+		const errorContainer = document.querySelector('#error-container');
+
+		form.addEventListener('submit', async (e) => {
+			e.preventDefault();
+
+			errorContainer.textContent = '';
+
+			try {
+				const res = await fetch('/auth/login', {
+					method: 'POST',
+					body: JSON.stringify({
+						email: emailInput.value,
+						password: passwordInput.value,
+					}),
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				});
+				const data = await res.json();
+
+				if (data.error) {
+					errorContainer.textContent = data.error;
+				}
+
+				if (data.user) {
+					console.log(`Logged in as: ${data.user}`);
+					location.assign('/posts');
+				}
+			} catch (err) {
+				console.error(err);
+				errorContainer.textContent = 'Server error';
+			}
+		});
+	</script>
 </html>
