@@ -6,6 +6,23 @@
 		<a href="/u/profile">User Profile</a>
 		<a href="/auth/signup">Sign Up</a>
 		<a href="/auth/login">Log In</a>
-		<a href="#">Logout</a>
+		<a href="#" id="link-logout">Logout</a>
 	</div>
 </nav>
+
+<script defer>
+	const logOutLink = document.querySelector('#link-logout');
+
+	logOutLink.addEventListener('click', async () => {
+		try {
+			const res = await fetch('/auth/logout', { method: 'DELETE' });
+
+			if (res.status === 204) {
+				console.info('Successfully logged out');
+				location.assign('/');
+			}
+		} catch (err) {
+			console.error(err);
+		}
+	});
+</script>

@@ -41,6 +41,7 @@ const signup_post = async (req, res) => {
 		res.cookie('access_token', accessToken, {
 			httpOnly: true,
 			maxAge: process.env.ACCESS_TOKEN_EXPIRATION * 1000,
+			sameSite: 'strict',
 		});
 		res.status(201).json({ user: newUser.id });
 	} catch (err) {
@@ -75,6 +76,7 @@ const login_post = async (req, res) => {
 		res.cookie('access_token', accessToken, {
 			httpOnly: true,
 			maxAge: process.env.ACCESS_TOKEN_EXPIRATION * 1000,
+			sameSite: 'strict',
 		});
 		res.status(200).json({ user: existingUser.id });
 	} catch (err) {
@@ -84,7 +86,8 @@ const login_post = async (req, res) => {
 };
 
 const logout_delete = (req, res) => {
-	res.send('Log Out Delete');
+	res.cookie('access_token', '', { maxAge: 1 });
+	res.sendStatus(204);
 };
 
 module.exports = {
