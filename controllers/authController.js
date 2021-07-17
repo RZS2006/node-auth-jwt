@@ -21,6 +21,7 @@ const signup_post = async (req, res) => {
 
 	try {
 		const emailExists = await User.findOne({ email });
+
 		if (emailExists) {
 			return res.status(400).json({ error: 'Email already exists' });
 		}
@@ -48,8 +49,38 @@ const signup_post = async (req, res) => {
 	}
 };
 
-const login_post = (req, res) => {
-	res.send('Log In Post');
+const login_post = async (req, res) => {
+	const { email, password } = req.body;
+
+	try {
+		const existingUser = await User.findOne({ email });
+
+		if (!existingUser) {
+			return res.status(400).json({ error: 'User does not exist' });
+		}
+
+		const passwordValid = await bcrypt.compare(
+			password,
+			existingUser.password
+		);
+
+		if (!passwordValid) {
+			return res
+				.status(400)
+				.json({ error: 'Email and password do not match' });
+		}
+
+		const accessToken = createAccessToken(existingUser.id);
+
+		res.cookie('access_token', accessToken, {
+			httpOnly: true,
+			maxAge: process.env.ACCESS_TOKEN_EXPIRATION * 1000,
+		});
+		res.status(200).json({ user: existingUser.id });
+	} catch (err) {
+		console.error(err);
+		res.status(500);
+	}
 };
 
 const logout_delete = (req, res) => {
