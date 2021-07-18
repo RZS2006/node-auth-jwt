@@ -25,6 +25,7 @@ const checkUser = (req, res, next) => {
 
 			const user = await User.findById(decoded.id);
 
+			user.password = undefined;
 			res.locals.user = user;
 			res.locals.authenticated = true;
 
