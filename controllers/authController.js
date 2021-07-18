@@ -4,7 +4,7 @@ const User = require('../models/User');
 
 const createAccessToken = (id) => {
 	return jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, {
-		expiresIn: process.env.ACCESS_TOKEN_EXPIRATION,
+		expiresIn: parseInt(process.env.ACCESS_TOKEN_EXPIRATION),
 	});
 };
 

@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 
 const authRoutes = require('./routes/authRoutes');
-const { checkUser } = require('./middleware/authMiddleware');
+const { checkUser, requireAuth } = require('./middleware/authMiddleware');
 
 const PORT = process.env.PORT || 8000;
 
@@ -29,11 +29,11 @@ app.get('*', checkUser);
 
 app.use('/auth', authRoutes);
 
-app.get('/', (req, res) => {
+app.get('/', checkUser, (req, res) => {
 	res.render('home', { title: 'Home' });
 });
 
-app.get('/posts', (req, res) => {
+app.get('/posts', requireAuth, (req, res) => {
 	const posts = [
 		{ title: '10 Best Practices For LIGIER' },
 		{ title: "Here's A Quick Way To Solve A Problem with LIGIER" },
@@ -43,7 +43,7 @@ app.get('/posts', (req, res) => {
 	res.render('posts', { title: 'Posts', posts });
 });
 
-app.get('/u/profile', (req, res) => {
+app.get('/u/profile', requireAuth, (req, res) => {
 	res.render('profile', { title: 'User Profile' });
 });
 
