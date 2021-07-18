@@ -3,7 +3,7 @@
 	<%- include("./partials/_head.ejs") %>
 	<body>
 		<%- include("./partials/_nav.ejs") %>
-		<h1>Welcome to AuthBlog</h1>
+		<h1>Welcome to AuthBlog <%= user %></h1>
 		<p>A blog application with authentication using JWT</p>
 		<a href="/posts">See posts</a>
 	</body>

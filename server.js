@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 
 const authRoutes = require('./routes/authRoutes');
+const { checkUser } = require('./middleware/authMiddleware');
 
 const PORT = process.env.PORT || 8000;
 
@@ -23,6 +24,8 @@ mongoose
 	})
 	.then(() => console.log('Connected to database!'))
 	.catch((err) => console.log('Error connecting to database!', err));
+
+app.get('*', checkUser);
 
 app.use('/auth', authRoutes);
 
