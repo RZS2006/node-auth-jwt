@@ -40,20 +40,30 @@ const requireAuth = (req, res, next) => {
 		return res.redirect(401, '/auth/login');
 	}
 
-	jwt.verify(
-		accessToken,
-		process.env.ACCESS_TOKEN_SECRET,
-		async (err, decoded) => {
-			if (err) {
-				return res.redirect(403, '/auth/login');
-			}
-
-			next();
+	jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, async (err) => {
+		if (err) {
+			return res.redirect(403, '/auth/login');
 		}
-	);
+
+		next();
+	});
 };
 
-const preventAuth = () => {};
+const preventAuth = (req, res, next) => {
+	const accessToken = req.cookies['access_token'];
+
+	if (!accessToken) {
+		return next();
+	}
+
+	jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, async (err) => {
+		if (err) {
+			return next();
+		}
+
+		res.redirect('/posts');
+	});
+};
 
 module.exports = {
 	checkUser,
