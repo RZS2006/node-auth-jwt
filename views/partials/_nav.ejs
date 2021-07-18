@@ -3,10 +3,13 @@
 	<div>
 		<a href="/">Home</a>
 		<a href="/posts">Posts</a>
+		<% if (authenticated) { %>
 		<a href="/u/profile">User Profile</a>
+		<a href="#" id="link-logout">Logout</a>
+		<% } else { %>
 		<a href="/auth/signup">Sign Up</a>
 		<a href="/auth/login">Log In</a>
-		<a href="#" id="link-logout">Logout</a>
+		<% } %>
 	</div>
 </nav>
 

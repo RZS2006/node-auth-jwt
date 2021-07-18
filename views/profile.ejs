@@ -4,5 +4,11 @@
 	<body>
 		<%- include("./partials/_nav.ejs") %>
 		<h1>User Profile</h1>
+		<ul>
+			<li>Username: <%= user.username %></li>
+			<li>Email: <%= user.email %></li>
+			<li>ID: <%= user.id %></li>
+			<li>Created at: <%= new Date(user.createdAt) %></li>
+		</ul>
 	</body>
 </html>
